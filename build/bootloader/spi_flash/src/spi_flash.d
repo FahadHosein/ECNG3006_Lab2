@@ -4,7 +4,7 @@ src/spi_flash.o: \
  /home/fahad/esp/ESP8266_RTOS_SDK/components/esp_common/include/esp_err.h \
  /home/fahad/esp/ESP8266_RTOS_SDK/components/esp8266/include/esp8266/spi_register.h \
  /home/fahad/esp/ESP8266_RTOS_SDK/components/esp8266/include/esp8266/eagle_soc.h \
- /home/fahad/esp/workspace/LAB1/build/bootloader/../include/sdkconfig.h \
+ /home/fahad/esp/workspace/LAB2/build/bootloader/../include/sdkconfig.h \
  /home/fahad/esp/ESP8266_RTOS_SDK/components/esp8266/include/driver/soc.h \
  /home/fahad/esp/ESP8266_RTOS_SDK/components/esp8266/include/esp8266/pin_mux_register.h \
  /home/fahad/esp/ESP8266_RTOS_SDK/components/esp8266/include/esp8266/eagle_soc.h \
@@ -29,7 +29,7 @@ src/spi_flash.o: \
 
 /home/fahad/esp/ESP8266_RTOS_SDK/components/esp8266/include/esp8266/eagle_soc.h:
 
-/home/fahad/esp/workspace/LAB1/build/bootloader/../include/sdkconfig.h:
+/home/fahad/esp/workspace/LAB2/build/bootloader/../include/sdkconfig.h:
 
 /home/fahad/esp/ESP8266_RTOS_SDK/components/esp8266/include/driver/soc.h:
 
