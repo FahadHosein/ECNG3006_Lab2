@@ -113,8 +113,8 @@ void app_main(void)
     xTaskCreate(gpio_status, "gpio_status_task", 2048, NULL, QUANTUMN, NULL);
     vTaskGetRunTimeStats(buffer);
 
-    printf("Task        Abs Time          Time");
-    printf("**********************************");
+    printf("Task            Abs Time        Time\n");
+    printf("************************************\n");
     printf(buffer, "\n");
     for (;;)
         ;
