@@ -110,9 +110,9 @@ void app_main(void)
     xSemaphore = xSemaphoreCreateMutex();
     xSemaphoreGive(xSemaphore);
 
-    // TASK3 > TASK2 > TASK1
-    xTaskCreate(gpio_on, "gpio_on_task", 2048, NULL, LOW_PRIORITY, NULL);
-    xTaskCreate(gpio_off, "gpio_off_task", 2048, NULL, MEDIUM_PRIORITY, NULL);
+    // TASK3 > TASK1 > TASK3
+    xTaskCreate(gpio_on, "gpio_on_task", 2048, NULL, MEDIUM_PRIORITY, NULL);
+    xTaskCreate(gpio_off, "gpio_off_task", 2048, NULL, LOW_PRIORITY, NULL);
     xTaskCreate(gpio_status, "gpio_status_task", 2048, NULL, HIGH_PRIORITY, NULL);
 
     /*
