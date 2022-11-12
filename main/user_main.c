@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
+#include <stdlib.h>s
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -12,13 +12,16 @@
 #include "sys/time.h"
 
 #include "esp_log.h"
-#include "esp_system.h"
+#include "esp_system.h" 
+#include "esp_sleep.h"
 
 #define GPIO_OUTPUT_IO  2   // LED
 
 #define LOW_PRIORITY    1
 #define MEDIUM_PRIORITY 2
 #define HIGH_PRIORITY   3
+
+#define uS_TO_S_FACTOR  1000000LL   //Conversion factor from microseconds to seconds
 
 static const char *TAG = "main";
 static char buffer[2000];
@@ -96,6 +99,17 @@ static void gpio_status(void *pvParameters)
     }
 }
 
+void vApplicationIdleHook(void)
+{
+    esp_err_t ret;
+    ESP_LOGI(TAG, "Putting Processor to Sleep");
+    ret = esp_sleep_enable_timer_wakeup(2 * uS_TO_S_FACTOR);    //Sleeping for 2 seconds
+    if(ret == ESP_OK)
+    {
+        esp_light_sleep_start();
+    }
+}
+
 void app_main(void)
 {
     gpio_config_t io_conf;
@@ -111,45 +125,9 @@ void app_main(void)
     xSemaphoreGive(xSemaphore);
 
     // TASK3 > TASK2 > TASK1
-    xTaskCreate(gpio_on, "gpio_on_task", 2048, NULL, LOW_PRIORITY, NULL);
-    xTaskCreate(gpio_off, "gpio_off_task", 2048, NULL, MEDIUM_PRIORITY, NULL);
-    xTaskCreate(gpio_status, "gpio_status_task", 2048, NULL, HIGH_PRIORITY, NULL);
-
-    /*
-    TASK1: gpio_on
-    TASK2: gpio_off
-    TASK3: gpio_status
-
-    // TASK1 > TASK2 > TASK3
     xTaskCreate(gpio_on, "gpio_on_task", 2048, NULL, HIGH_PRIORITY, NULL);
     xTaskCreate(gpio_off, "gpio_off_task", 2048, NULL, MEDIUM_PRIORITY, NULL);
     xTaskCreate(gpio_status, "gpio_status_task", 2048, NULL, LOW_PRIORITY, NULL);
-
-    // TASK1 > TASK3 > TASK2
-    xTaskCreate(gpio_on, "gpio_on_task", 2048, NULL, HIGH_PRIORITY, NULL);
-    xTaskCreate(gpio_off, "gpio_off_task", 2048, NULL, LOW_PRIORITY, NULL);
-    xTaskCreate(gpio_status, "gpio_status_task", 2048, NULL, MEDIUM_PRIORITY, NULL);
-
-    // TASK2 > TASK1 > TASK3
-    xTaskCreate(gpio_on, "gpio_on_task", 2048, NULL, MEDIUM_PRIORITY, NULL);
-    xTaskCreate(gpio_off, "gpio_off_task", 2048, NULL, HIGH_PRIORITY, NULL);
-    xTaskCreate(gpio_status, "gpio_status_task", 2048, NULL, LOW_PRIORITY, NULL);
-
-    // TASK2 > TASK3 > TASK1
-    xTaskCreate(gpio_on, "gpio_on_task", 2048, NULL, LOW_PRIORITY, NULL);
-    xTaskCreate(gpio_off, "gpio_off_task", 2048, NULL, HIGH_PRIORITY, NULL);
-    xTaskCreate(gpio_status, "gpio_status_task", 2048, NULL, MEDIUM_PRIORITY, NULL);
-
-    // TASK3 > TASK1 > TASK3
-    xTaskCreate(gpio_on, "gpio_on_task", 2048, NULL, MEDIUM_PRIORITY, NULL);
-    xTaskCreate(gpio_off, "gpio_off_task", 2048, NULL, LOW_PRIORITY, NULL);
-    xTaskCreate(gpio_status, "gpio_status_task", 2048, NULL, HIGH_PRIORITY, NULL);
-
-    // TASK3 > TASK2 > TASK1
-    xTaskCreate(gpio_on, "gpio_on_task", 2048, NULL, LOW_PRIORITY, NULL);
-    xTaskCreate(gpio_off, "gpio_off_task", 2048, NULL, MEDIUM_PRIORITY, NULL);
-    xTaskCreate(gpio_status, "gpio_status_task", 2048, NULL, HIGH_PRIORITY, NULL);
-    */
 
     vTaskGetRunTimeStats(buffer);
 
@@ -157,5 +135,7 @@ void app_main(void)
     printf("************************************\n");
     printf(buffer, "\n");
     for (;;)
-        ;
+    {
+        vApplicationIdleHook();
+    };
 }
