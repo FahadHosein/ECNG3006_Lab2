@@ -43,6 +43,7 @@ gpio_off_task   499938          42
 gpio_status_tas 1160            <1
 gpio_on_task    501756          43
 Tmr Svc         148190          12
+
 I (1742) main: GPIO ON
 
 I (2252) main: GPIO STATUS: 1
