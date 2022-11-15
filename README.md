@@ -39,3 +39,9 @@ There are 3 tasks, therefore there exists 3! (6) combinations of possible task o
 ![lab2_q2b6](lab2_q2b6.png)
 <p>
 
+It can be seen that the orders Task1 > Task2 > Task3, and Task2 > Task1 > Task3 have similar runtime statistics. <p> 
+The orders Task1 > Task3 > Task2, and Task3 > Task1 > Task2 have similar runtime statistics.
+<p>
+The orders Task2 > Task3 > Task1, and Task3 > Task2 > Task1 also have similar runtime statistics.
+<p>
+For the orders: Task1 > Task2 > Task3, and Task1 > Task3 > Task2, the system adheres to the task priorities set. However, for the remaining orders, tasks are preempted. This is expected, as mutexes utlise priority inheritance. This is shown by certain tasks preempting other tasks, i.e., tasks are not always executed strictly based on the task priorities set.
