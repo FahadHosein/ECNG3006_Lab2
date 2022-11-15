@@ -1,32 +1,41 @@
 # ECNG3006: Lab 2
 This repository consists of three projects based off the example from the espressif ESP8266_RTOS_SDK (https://github.com/espressif/ESP8266_RTOS_SDK). The 'gpio' example was used to conduct the required exercises.
 
-# P1
+# Question 2
+To compare the differences in the performance based on varying task priorities, the following criteria can be used:
+Priority Inversion: Higher priority tasks are preempted by lower priority tasks?
+Utilisation: Sufficient CPU time for all tasks to be executed?
+Feasibility: All tasks meet their respected deadlines?
+Jitter: Consistent timing of successive tasks?
 
-## sdkconfig
-This configuration file is generated for each project created. It contains various configuration parameters required for the device to function correctly. Such parameters include the baud rate, and COM ports. These are namely CONFIG_ESPTOOLPY_BAUD, and CONFIG_ESPTOOLPY_PORT respectively. Incorrect changes to this file can impact the functionality of the device. For example, if the baud rate or COM port is incorrectly defined, the device may not be able to communicate with the host machine.
+### Priority Inheritance
+In the case whereby a high-priority task blocks a lower-priority tasks which holds the mutex, the priority of the task holding the mutex is temporarily raised such that it is the same as the blocking task. 
+<p>
+There are 3 tasks, therefore there exists 3! (6) combinations of possible task orders.
+<p>
 
-## sdokconfig.h
-This configuration file is generated following a successful build of the project. The parameters specified in 'sdkconfig' are reflected here and are defined as macros using the #DEFINE preprocessor directive. Any changes to the 
-'sdkconfig.h' file would have the same effects as if changes were made to the 'sdkconfig' file.
+### Task1 > Task2 > Task3
+![lab2_q2b1](lab2_q2b1.png)
 
-## FreeRTOSConfig.h
-This file utilises the 'sdkconfig.h' file, and further specifies application specific definitions for the required hardware and application. It specifies which API functions of the FreeRTOS Kernel should be used. Any changes to this file would take precedence over changes in the 'sdkconfig' and 'sdkconfig.h' files. For example, functions such as 'vTaskDelay' can be implemented by setting the value of "#define INCLUDE_vTaskDelay" to 1, or to 0 if not implemented.
+<p>
 
-# P2
-Task performance can be analysed using the built-in API function which can collect information on the processing time per task. (Source: https://www.freertos.org/rtos-run-time-stats.html)
+### Task1 > Task3 > Task2 
+![lab2_q2b2](lab2_q2b2.png)
+<p>
 
-The Run Time Statistics can be enabled by defining certain macros in the 'FreeRTOSConfig.h' file.
-These are:
+### Task2 > Task1 > Task3
+![lab2_q2b3](lab2_q2b3.png)
+<p>
 
-### 1) #define configGENERATE_RUN_TIME_STATS
-This can be enabled by setting the macro to 1.
+### Task2 > Task3 > Task1
+![lab2_q2b4](lab2_q2b4.png)
+<p>
 
-### 2) #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-This should be 10 to 100 times faster than the specified tic interrupt. Faster times corresponds to more accurate statistics.
+### Task3 > Task1 > Task2
+![lab2_q2b5](lab2_q2b5.png)
+<p>
 
-### 3) #define portGET_RUN_TIME_COUNTER_VALUE()
-This returns the time configured in the previous macro.
+### Task3 > Task2 > Task1
+![lab2_q2b6](lab2_q2b6.png)
+<p>
 
-### vTaskGetRunTimeStats()
-This API function is used to display the gathered informastion.
